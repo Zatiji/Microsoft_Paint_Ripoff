@@ -32,7 +32,7 @@ public class SwingPaint {
     };
 
     public static void main(String[] args) {
-
+        new SwingPaint().show();
     }
 
     public void show() {
@@ -82,6 +82,7 @@ public class SwingPaint {
         content.add(controls, BorderLayout.NORTH);
 
         frame.setSize(600, 600);
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
