@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 
 public class SwingPaint {
 
-    JButton clearBtn, blackBtn, blueBtn, greenBtn, redBtn, magentaBtn;
-    DrawArea drawArea;
-    ActionListener actionListener = new ActionListener() {
+    private JButton clearBtn, blackBtn, blueBtn, greenBtn, redBtn, magentaBtn;
+    // create draw area
+    DrawArea drawArea= new DrawArea();
+    private ActionListener actionListener = new ActionListener() {
         
-        @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == clearBtn) {
                 drawArea.clear();
@@ -41,8 +41,6 @@ public class SwingPaint {
         Container content = frame.getContentPane();
         // set layout on content pane
         content.setLayout(new BorderLayout());
-        //creat draw area
-        final DrawArea drawArea= new DrawArea();
         
         // add to content pane
         content.add(drawArea, BorderLayout.CENTER);

@@ -42,6 +42,7 @@ public class DrawArea extends JComponent {
                 if (g2 != null) {
                     // draw a line if g2 is not null(if its in the draw area)
                     g2.drawLine(oldMouseX, oldMouseY, currentMouseX, currentMouseY);
+                    // -------------g2.drawRect(currentMouseX, currentMouseY, 5, 5);
                     // refresh draw area to repaint
                     repaint();
                     // store currents coords x, y as old coords
