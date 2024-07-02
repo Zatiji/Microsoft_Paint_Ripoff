@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,8 +11,7 @@ import javax.swing.JPanel;
 public class SwingPaint {
 
     private JButton clearBtn, blackBtn, blueBtn, greenBtn, redBtn, magentaBtn;
-    // create draw area
-    DrawArea drawArea= new DrawArea();
+    private DrawArea drawArea= new DrawArea();
     private ActionListener actionListener = new ActionListener() {
         
         public void actionPerformed(ActionEvent e) {
@@ -30,10 +30,6 @@ public class SwingPaint {
             }
         }
     };
-
-    public static void main(String[] args) {
-        new SwingPaint().show();
-    }
 
     public void show() {
         // create the main frame
@@ -79,6 +75,15 @@ public class SwingPaint {
         // add to content pane
         content.add(controls, BorderLayout.NORTH);
 
+        // Center the window
+        int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+        int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int CenterWidth = (screenWidth - frame.getWidth())/2;
+        int CenterHeight = (screenHeight - frame.getHeight())/2;
+        frame.setLocation(CenterWidth, CenterHeight);
+        frame.pack();
+
+        // Last configuration
         frame.setSize(600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
