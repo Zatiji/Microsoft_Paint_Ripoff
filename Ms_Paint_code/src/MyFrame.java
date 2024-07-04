@@ -66,35 +66,35 @@ public class MyFrame extends JFrame {
     
 
         // initialising the buttons
-        clearBtn = new JButton("Clear");
+        clearBtn = new JButton("CLEAR");
         clearBtn.addActionListener(clearCanva);
 
-        blackBtn = new JButton("black");
-        //blackBtn.setIcon(blackIcon);
+        blackBtn = new JButton();
+        blackBtn.setIcon(blackIcon);
         blackBtn.addActionListener(switchColor);
 
-        redBtn = new JButton("red");
-        //redBtn.setIcon(redIcon);
+        redBtn = new JButton();
+        redBtn.setIcon(redIcon);
         redBtn.addActionListener(switchColor);
 
-        blueBtn = new JButton("blue");
-        //blueBtn.setIcon(blueIcon);
+        blueBtn = new JButton();
+        blueBtn.setIcon(blueIcon);
         blueBtn.addActionListener(switchColor);
 
-        yellowBtn = new JButton("yellow");
-        //yellowBtn.setIcon(yellowIcon);
+        yellowBtn = new JButton();
+        yellowBtn.setIcon(yellowIcon);
         yellowBtn.addActionListener(switchColor);
 
-        greenBtn = new JButton("green");
-        //greenBtn.setIcon(greenIcon);
+        greenBtn = new JButton();
+        greenBtn.setIcon(greenIcon);
         greenBtn.addActionListener(switchColor);
 
-        orangeBtn = new JButton("orange");
-        //orangeBtn.setIcon(orangeIcon);
+        orangeBtn = new JButton();
+        orangeBtn.setIcon(orangeIcon);
         orangeBtn.addActionListener(switchColor);
 
-        magentaBtn = new JButton("magenta");
-        //magentaBtn.setIcon(magentaIcon);
+        magentaBtn = new JButton();
+        magentaBtn.setIcon(magentaIcon);
         magentaBtn.addActionListener(switchColor);
 
         // adding the buttons to the toolBar
@@ -104,6 +104,7 @@ public class MyFrame extends JFrame {
         mainToolBar.add(blackBtn);
         mainToolBar.add(redBtn);
         mainToolBar.add(yellowBtn);
+        mainToolBar.add(orangeBtn);
         mainToolBar.add(magentaBtn);
         mainToolBar.add(clearBtn);
 
@@ -120,10 +121,10 @@ public class MyFrame extends JFrame {
         int CenterWidth = (screenWidth - this.getWidth())/2;
         int CenterHeight = (screenHeight - this.getHeight())/2;
         setLocation(CenterWidth, CenterHeight);
-        //pack();
+        pack();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 500);
+        setSize(1600, 1200);
         setLocationRelativeTo(null);
         setVisible(true);
     }

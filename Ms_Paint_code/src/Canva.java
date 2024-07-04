@@ -29,7 +29,7 @@ public class Canva extends JPanel{
         brushSize = 3;
         colorValue = 6;
         
-        this.setPreferredSize(new Dimension(500, 500));
+        this.setPreferredSize(new Dimension(1400, 1000));
         setDoubleBuffered(false);
 
         // algorithm that saves the "old" x and y mouse coordinates
