@@ -12,11 +12,13 @@ import javax.swing.JPanel;
 
 public class Canva extends JPanel{
 
-    private int brushSize;
-    private Integer colorValue;
+    // static variables
+    static private int brushSize;
+    static private Integer colorValue;
+    private Graphics2D g2;
+
     private Image image;
     private ColorPaint colorPaint;
-    private Graphics2D g2;
     private int currentMouseX, currentMouseY, oldMouseX, oldMouseY;
 
 
@@ -91,6 +93,14 @@ public class Canva extends JPanel{
         g2.fillRect(0, 0, getSize().width, getSize().height);
         g2.setPaint(Color.black);
         repaint();
+    }
+
+    public void setColorValue(Integer newValue) {
+        colorValue = newValue;
+    }
+
+    public void setSizeValue(int newValue) {
+        brushSize = newValue;
     }
 
     
