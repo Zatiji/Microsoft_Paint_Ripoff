@@ -10,24 +10,26 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 
-public class Canva extends JPanel{
+public class drawAlgorithm extends JPanel{
 
     // static variables
-    static private int brushSize;
-    static private Integer colorValue;
+    private int brushSize;
     private Graphics2D g2;
 
     private Image image;
-    private ColorPaint colorPaint;
     private int currentMouseX, currentMouseY, oldMouseX, oldMouseY;
 
+    // public variables
+    Color currentColor = Color.black;
+    Color eraserColor = Color.white;
+    BasicStroke strokeSize = new BasicStroke((float) 1); 
+    int active_tool = 0;
 
-    Canva() {
+
+    drawAlgorithm() {
 
         // setting the values of private members
-        colorPaint = new ColorPaint();
         brushSize = 3;
-        colorValue = 6;
         
         this.setPreferredSize(new Dimension(1400, 1000));
         setDoubleBuffered(false);
@@ -55,7 +57,6 @@ public class Canva extends JPanel{
                 if (g2 != null) {
                     // setting size and color of brush
                     g2.setStroke(new BasicStroke(brushSize));
-                    g2.setColor(colorPaint.getColor(colorValue));
                     // drawing the line
                     g2.drawLine(oldMouseX, oldMouseY, currentMouseX, currentMouseY);
                     // refresh draw area to repaint
@@ -95,9 +96,6 @@ public class Canva extends JPanel{
         repaint();
     }
 
-    public void setColorValue(Integer newValue) {
-        colorValue = newValue;
-    }
 
     public void setSizeValue(int newValue) {
         brushSize = newValue;
