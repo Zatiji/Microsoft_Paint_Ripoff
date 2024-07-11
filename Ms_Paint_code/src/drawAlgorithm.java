@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
@@ -122,8 +123,52 @@ public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionL
         }
     }
 
-    
+    // mouse listeners
+    @Override
+    public void mouseClicked(MouseEvent e){ }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
+        getCoordinate(e);
+        x1 = e.getX();
+        y1 = e.getY();
+    }
 
-
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (active_tool == RECTANGLE_TOOL && isDragged) {
+            if (x1<x2 && y1<y2) {
+                shapes.push(new ShapePaint(x1, y1, x2-x1, y2-y1, currentColor, stroke, 2));
+            } else if (x2<x1 && y1<y2) {
+                shapes.push(new ShapePaint(x2, y1, x1-x2, y2-y1, currentColor, stroke, 2));
+            } else if (x1<x2 && y2<y1) {
+                shapes.push(new ShapePaint(x1, y2, x1-x2, y1-y2, currentColor, stroke, 2));
+            } else if (x2<x1 && y2<y1) {
+                shapes.push(new ShapePaint(x2, y2, x2-x1, y2-y1, currentColor, stroke, 2));
+            }
+            repaint();
+        } else if (active_tool == CIRCLE_TOOL && isDragged) {
+            if (x1<x2 && y1<y2) {
+                shapes.push(new ShapePaint(x1, y1, x2-x1, y2-y1, currentColor, stroke, 3));
+            } else if (x2<x1 && y1<y2) {
+                shapes.push(new ShapePaint(x2, y1, x1-x2, y2-y1, currentColor, stroke, 3));
+            } else if (x1<x2 && y2<y1) {
+                shapes.push(new ShapePaint(x1, y2, x1-x2, y1-y2, currentColor, stroke, 3));
+            } else if (x2<x1 && y2<y1) {
+                shapes.push(new ShapePaint(x2, y2, x2-x1, y2-y1, currentColor, stroke, 3));
+            }
+            repaint();
+        } else if (active_tool == LINE_TOOL && isDragged) {
+            shapes.push(new ShapePaint(x1, y1, x2, y2, currentColor, stroke, 1));
+        }
+        isDragged = false;
+    }
 }
+
+// @Override
+// public void mouseEntered(MouseEvent e) { }
+
+// @Override
+// public void mouseExited(MouseEvent e) { }
+
+
