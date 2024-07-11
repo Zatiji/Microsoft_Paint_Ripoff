@@ -2,7 +2,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -15,7 +14,6 @@ import javax.swing.border.TitledBorder;
 
 public class MainToolBar extends JToolBar {
     private JLabel strokeLabel;
-    private JButton colorButton;
 
     private DrawingFrame drawFrame; 
 
@@ -24,14 +22,15 @@ public class MainToolBar extends JToolBar {
 
         // on initie les objets
         ColorPanel colorPanel = new ColorPanel(drawFrame);
-        DrawingToolsPanel drawingTools = new DrawingTools();
-        DrawingShapesPanel drawingShapes = new DrawingShapes();
-        UndoRedoPanel undoRedo = new UndoRedo();
+        DrawingToolsPanel drawingTools = new DrawingToolsPanel();
+        DrawingShapesPanel drawingShapes = new DrawingShapesPanel();
+        UndoRedoPanel undoRedo = new UndoRedoPanel();
 
         add(undoRedo);
         add(drawingTools);
         add(new ManageStroke());
         add(drawingShapes);
+        add(colorPanel);
         add(new Separator());
 
         setBackground(Color.WHITE);
@@ -70,9 +69,9 @@ public class MainToolBar extends JToolBar {
 
     }
 
-    class DrawingShapes extends JPanel {
+    class DrawingShapesPanel extends JPanel {
 
-        DrawingShapes() {
+        DrawingShapesPanel() {
             JButton circleBtn = new JButton("CIRCLE");
             circleBtn.addActionListener(new AbstractAction() {
                 @Override
@@ -117,5 +116,42 @@ public class MainToolBar extends JToolBar {
             add(new Separator());
             setLayout(new GridLayout(1, 4));
         }
+    }
+
+    class UndoRedoPanel extends JPanel {
+        UndoRedoPanel() {
+
+            JButton undoBtn = new JButton("undo");
+            undoBtn.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // drawFrame.getCanva().undo();
+                }
+            });
+
+            JButton redoBtn = new JButton("redo");
+            redoBtn.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // drawFrame.getCanva().redo();
+                }
+            });
+
+            JButton clearBtn = new JButton("clear");
+            clearBtn.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // drawFrame.getCanva().clear();
+                }
+            });
+            
+            add(undoBtn);
+            add(redoBtn);
+            add(new Separator());
+            add(clearBtn);
+
+            setLayout(new GridLayout(1,4));
+        }
+
     }
 }
