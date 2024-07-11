@@ -1,106 +1,129 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.util.Stack;
+
 import javax.swing.JPanel;
 
-public class drawAlgorithm extends JPanel{
+public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionListener {
 
-    // static variables
-    private int brushSize;
-    private Graphics2D g2;
+    // tools constants
+    private final int PENCIL_TOOL = 0;
+    private final int LINE_TOOL = 1;
+    private final int RECTANGLE_TOOL = 2;
+    private final int CIRCLE_TOOL = 3;
+    private final int ERASER_TOOL = 4;
 
-    private Image image;
-    private int currentMouseX, currentMouseY, oldMouseX, oldMouseY;
+    // shapes constants
+    private final int LINE = 1;
+    private final int RECTANGLE = 2;
+    private final int CIRCLE = 3;
 
-    // public variables
+    private Graphics2D graphics2D;
+
+    private int grouped;
+
+    // stack : last in, first out
+    Stack<ShapePaint> shapes;
+    Stack<ShapePaint> removedShapes;
+    Stack<ShapePaint> previewShapes;
+
+    private BufferedImage canvas;
+
+    // brush size
+    BasicStroke stroke = new BasicStroke((float) 1);
+
+    // mouse coordinates
+    int x1, y1, x2, y2;
+
+    // canva Default settings
+    int active_tool = 0;
     Color currentColor = Color.black;
     Color eraserColor = Color.white;
-    BasicStroke strokeSize = new BasicStroke((float) 1); 
-    int active_tool = 0;
+    private boolean isTransparent = true;
+    private boolean isDragged = false;
 
+    private DrawingFrame drawFrame;
+    int canvaHeight, canvaWidth;
 
-    drawAlgorithm() {
-
-        // setting the values of private members
-        brushSize = 3;
-        
-        this.setPreferredSize(new Dimension(1400, 1000));
-        setDoubleBuffered(false);
-
-        // algorithm that saves the "old" x and y mouse coordinates
-        addMouseListener(new MouseAdapter() {
-            
-            public void mousePressed(MouseEvent e) {
-                // save coord x, y when mouse is pressed
-                oldMouseX = e.getX();
-                oldMouseY = e.getY();
-            }
-
-        });
-
-        // algorithm to draw on canva
-        addMouseMotionListener(new MouseMotionAdapter() {
-
-            public void mouseDragged(MouseEvent e) {
-                // coord x, y when dragMouse
-                currentMouseX = e.getX();
-                currentMouseY = e.getY();
-
-                // draw a line if g2 is not null(if its in the draw area)
-                if (g2 != null) {
-                    // setting size and color of brush
-                    g2.setStroke(new BasicStroke(brushSize));
-                    // drawing the line
-                    g2.drawLine(oldMouseX, oldMouseY, currentMouseX, currentMouseY);
-                    // refresh draw area to repaint
-                    repaint();
-                    // store currents coords x, y as old coords
-                    oldMouseX = currentMouseX;
-                    oldMouseY = currentMouseY;
-                }
-            }
-
-        });
+    DrawAlgorithm() {
+        setBackground(Color.WHITE);
+        shapes = new Stack<>();
     }
 
-    // we create the "actual" canva to draw on
+    DrawAlgorithm(DrawingFrame drawFrame, int canvaHeight, int canvaWidth) {
+        this.drawFrame = drawFrame;
+
+        grouped = 1;
+
+        shapes = new Stack<>();
+        removedShapes = new Stack<>();
+        previewShapes = new Stack<>();
+
+        setLayout(null);
+        setBackground(Color.WHITE);
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        this.canvaHeight = canvaHeight;
+        this.canvaWidth = canvaWidth;
+
+        // canvaSize();
+    }
+
+    // algorithme pour dessiner
+    @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-        if (image == null) {
-            // image to draw null ==> we create
-            image = createImage(getSize().width, getSize().height);
-            g2 = (Graphics2D) image.getGraphics();
-            // enable antialiasing
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            // clear draw area
-            clearCanva();
+        if (canvas == null) {
+            canvas = new BufferedImage(canvaWidth, canvaHeight, BufferedImage.TYPE_INT_ARGB);
+            graphics2D = canvas.createGraphics();
+            graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            //clear();
         }
 
-        g.drawImage(image, 0, 0, null);
-    }
+        Graphics2D g2d = (Graphics2D) g;
 
-    public void clearCanva() {
+        for (ShapePaint s : shapes) {
+            g2d.setColor(s.getColor());
+            g2d.setStroke(s.getStroke());
 
-        g2.setPaint(Color.white);
-        // draw white on entire draw area to clear
-        g2.fillRect(0, 0, getSize().width, getSize().height);
-        g2.setPaint(Color.black);
-        repaint();
-    }
+            if (s.getShape() == LINE) {
+                g2d.drawLine(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+            } else if (s.getShape() == RECTANGLE) {
+                g2d.drawRect(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+            } else if (s.getShape() == CIRCLE) {
+                g2d.drawOval(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+            } else if (s.getShape() == ERASER_TOOL) {
+                g2d.drawLine(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+            }
+        }
 
+        // 
+        if (previewShapes.size() > 0) {
+            ShapePaint s = previewShapes.pop();
+            g2d.setColor(s.getColor());
+            g2d.setStroke(s.getStroke());
 
-    public void setSizeValue(int newValue) {
-        brushSize = newValue;
+            if (s.getShape() == RECTANGLE) {
+                g2d.drawRect(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+            } else if (s.getShape() == CIRCLE) {
+                g2d.drawOval(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+            } else if (s.getShape() == LINE) {
+                g2d.drawLine(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+            }
+        }
     }
 
     
+
+
 
 }
