@@ -1,5 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -46,7 +47,7 @@ public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionL
     int active_tool = 0;
     Color currentColor = Color.black;
     Color eraserColor = Color.white;
-    private boolean isTransparent = true;
+    // private boolean isTransparent = true;
     private boolean isDragged = false;
 
     private DrawingFrame drawFrame;
@@ -75,10 +76,10 @@ public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionL
         this.canvaHeight = canvaHeight;
         this.canvaWidth = canvaWidth;
 
-        // canvaSize();
+        canvaSize();
     }
 
-    // algorithme pour dessiner
+    // MOUSE METHODS
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -163,12 +164,93 @@ public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionL
         }
         isDragged = false;
     }
+
+    @Override
+    public void mouseEntered(MouseEvent e) { }
+
+    @Override
+    public void mouseExited(MouseEvent e) { }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        getCoordinate(e);
+        isDragged = true;
+        x2 = e.getX();
+        y2 = e.getY();
+        if (active_tool == PENCIL_TOOL) {
+            shapes.push(new ShapePaint(x1, y1, x2, y2, currentColor, stroke, 1, grouped));
+            repaint();
+            x1 = x2;
+            y1 = y2;
+        } else if (active_tool == RECTANGLE_TOOL) {
+            if (x1 < x2 && y1 < y2) {
+                previewShapes.push(new ShapePaint(x1, y1, x2-x1, y2-y1, currentColor, stroke, 2));
+            } else if (x2 < x1 && y1 < y2) {
+                previewShapes.push(new ShapePaint(x2, y1, x1-x2, y2-y1, currentColor, stroke, 2));
+            } else if (x1 < x2 && y2 < y1) {
+                previewShapes.push(new ShapePaint(x1, y2, x2-x1, y1-y2, currentColor, stroke, 2));
+            } else if (x2 < x1 && y2 < y1) {
+                previewShapes.push(new ShapePaint(x2, y2, x1-x2, y1-y2, currentColor, stroke, 2));
+            }
+            repaint();
+        } else if (active_tool == CIRCLE_TOOL) {
+            if (x1 < x2 && y1 < y2) {
+                previewShapes.push(new ShapePaint(x1, y1, x2-x1, y2-y1, currentColor, stroke, 3));
+            } else if (x2 < x1 && y1 < y2) {
+                previewShapes.push(new ShapePaint(x2, y1, x1-x2, y2-y1, currentColor, stroke, 3));
+            } else if (x1 < x2 && y2 < y1) {
+                previewShapes.push(new ShapePaint(x1, y2, x2-x1, y1-y2, currentColor, stroke, 3));
+            } else if (x2 < x1 && y2 < y1) {
+                previewShapes.push(new ShapePaint(x2, y2, x1-x2, y1-y2, currentColor, stroke, 3));
+            }
+            repaint();
+        } else if (active_tool == LINE_TOOL) {
+            previewShapes.push(new ShapePaint(x1, y1, x2-x1, y2-y1, currentColor, stroke, 1));
+            repaint();
+        } else if (active_tool == ERASER_TOOL) {
+            shapes.push(new ShapePaint(x1, y1, x2, y2, eraserColor, stroke, 4, grouped));
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        getCoordinate(e);
+    }
+
+    // PUBLIC METHODS
+
+    public void undo() {}
+
+    public void redo() {}
+
+    public void setImage() {}
+
+    public void clear() {}
+
+    // PRIVATE METHODS
+
+    private void canvaSize() {
+        //drawFrame.getCoordinateBar().getSizeText().setText(canvaWidth + " , " + canvaHeight + "px");
+    }
+
+    // private void setCanva(int width, int height) {
+    //     canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    //     graphics2D = canvas.createGraphics();
+    //     graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    //     canvaSize();
+    //     setSize(width, height);
+    //     setPreferredSize(new Dimension(width, height));
+    //     clear();
+    // }
+
+    private void getCoordinate(MouseEvent e) {
+        String x = String.valueOf(e.getPoint().x);
+        String y = String.valueOf(e.getPoint().y);
+
+        drawFrame.getCoordinateBar().getCoordinateText().setText(x + " , " + y + " px");
+    }
+
+
+
 }
-
-// @Override
-// public void mouseEntered(MouseEvent e) { }
-
-// @Override
-// public void mouseExited(MouseEvent e) { }
-
 
