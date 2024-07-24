@@ -1,6 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
+//mport java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
@@ -74,7 +74,7 @@ public class MainToolBar extends JToolBar {
 
         DrawingShapesPanel() {
             JButton circleBtn = new JButton("CIRCLE");
-            circleBtn.setPreferredSize(new Dimension(30, 30));
+            // circleBtn.setPreferredSize(new Dimension(30, 30));
             circleBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -83,7 +83,7 @@ public class MainToolBar extends JToolBar {
             });
 
             JButton rectangleBtn = new JButton("RECTANGLE");
-            rectangleBtn.setPreferredSize(new Dimension(30, 30));
+            // rectangleBtn.setPreferredSize(new Dimension(30, 30));
             rectangleBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -92,7 +92,7 @@ public class MainToolBar extends JToolBar {
             });
 
             JButton lineBtn = new JButton("LINE");
-            lineBtn.setPreferredSize(new Dimension(30, 30));
+            // lineBtn.setPreferredSize(new Dimension(30, 30));
             lineBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -111,8 +111,13 @@ public class MainToolBar extends JToolBar {
     class ManageStroke extends JPanel {
         ManageStroke() {
             JSlider chooseLineStroke = new JSlider(HORIZONTAL, 1, 15, 2);
+
             strokeLabel = new JLabel("Size: " + chooseLineStroke.getValue(), SwingConstants.CENTER);
             drawFrame.getCanva().strokeSize = new BasicStroke((float) chooseLineStroke.getValue());
+            chooseLineStroke.addChangeListener(e -> {
+                strokeLabel.setText("Size: " + chooseLineStroke.getValue());
+                drawFrame.getCanva().strokeSize = new BasicStroke((float) chooseLineStroke.getValue());
+            });
 
             add(new Separator());
             add(strokeLabel);

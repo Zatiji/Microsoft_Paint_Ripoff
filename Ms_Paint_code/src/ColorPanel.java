@@ -13,6 +13,7 @@ public class ColorPanel extends JPanel implements ActionListener {
     private DrawingFrame myFrame;
 
     ColorPanel(DrawingFrame myFrame) {
+
         this.myFrame = myFrame;
 
         // initializing the buttons
@@ -21,7 +22,7 @@ public class ColorPanel extends JPanel implements ActionListener {
         blackBtn.setBackground(Color.BLACK);
         blackBtn.addActionListener(this);
 
-        whiteBtn = new JButton();
+        whiteBtn = new JButton("");
         whiteBtn.setSize(25, 25);
         whiteBtn.setBackground(Color.WHITE);
         whiteBtn.addActionListener(this);
