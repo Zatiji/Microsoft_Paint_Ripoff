@@ -11,7 +11,7 @@ import javax.swing.JToolBar;
 
 public class DrawingFrame extends JFrame {
 
-    private drawAlgorithm canva = new drawAlgorithm();
+    private DrawAlgorithm canva = new DrawAlgorithm();
     private JButton clearBtn, blackBtn, blueBtn, greenBtn, redBtn, magentaBtn, yellowBtn, orangeBtn;
     private JToolBar mainToolBar;
     private Container content;
@@ -63,7 +63,7 @@ public class DrawingFrame extends JFrame {
         setVisible(true);
     }
 
-    drawAlgorithm getCanva() {
+    DrawAlgorithm getCanva() {
         return canva;
     }
 
