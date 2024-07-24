@@ -38,7 +38,7 @@ public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionL
     private BufferedImage canvas;
 
     // brush size
-    BasicStroke strokeSize = new BasicStroke((float) 1);
+    public BasicStroke strokeSize = new BasicStroke((float) 1);
 
     // mouse coordinates
     int x1, y1, x2, y2;
@@ -277,7 +277,7 @@ public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionL
         canvaSize();
         setSize(width, height);
         setPreferredSize(new Dimension(width, height));
-        clear();
+        clearCanva();
     }
 
     private void getCoordinate(MouseEvent e) {

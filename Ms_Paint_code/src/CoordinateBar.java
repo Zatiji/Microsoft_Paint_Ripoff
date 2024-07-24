@@ -40,4 +40,8 @@ public class CoordinateBar extends JToolBar{
     public JLabel getCoordinateText() {
         return coordinateText;
     }
+
+    public JLabel getSizeText() {
+        return sizeText;
+    }
 }

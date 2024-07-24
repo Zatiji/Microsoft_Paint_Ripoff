@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -49,7 +51,7 @@ public class MenuBarPaint extends JToolBar implements ActionListener {
         setFloatable(false);
     }
 
-    public JToolBar getToolBar() {
+    public JToolBar getMenuBar() {
         return this;
     }
 
@@ -78,6 +80,15 @@ public class MenuBarPaint extends JToolBar implements ActionListener {
     private void saveImage(File f) throws IOException {
         BufferedImage bi = makePanel(drawFrame.getCanva());
         ImageIO.write(bi, "", file);
+    }
+
+    private BufferedImage makePanel(JPanel panel) {
+        int w = panel.getWidth();
+        int h = panel.getHeight();
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bi.createGraphics();
+        panel.print(g);
+        return bi;
     }
 
     private void openSelectedFile(File file) {

@@ -1,5 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
@@ -48,7 +49,7 @@ public class MainToolBar extends JToolBar {
             pencilBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //drawFrame.getCanva().activeTool = 0;
+                    drawFrame.getCanva().active_tool = 0;
                 }
             });
 
@@ -56,7 +57,7 @@ public class MainToolBar extends JToolBar {
             eraserBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //drawFrame.getCanva().activeTool = 4;
+                    drawFrame.getCanva().active_tool = 4;
                 }
             });
 
@@ -73,6 +74,7 @@ public class MainToolBar extends JToolBar {
 
         DrawingShapesPanel() {
             JButton circleBtn = new JButton("CIRCLE");
+            circleBtn.setPreferredSize(new Dimension(30, 30));
             circleBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -81,18 +83,20 @@ public class MainToolBar extends JToolBar {
             });
 
             JButton rectangleBtn = new JButton("RECTANGLE");
+            rectangleBtn.setPreferredSize(new Dimension(30, 30));
             rectangleBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // drawFrame.getCanva().active_tool = 2;
+                    drawFrame.getCanva().active_tool = 2;
                 }
             });
 
             JButton lineBtn = new JButton("LINE");
+            lineBtn.setPreferredSize(new Dimension(30, 30));
             lineBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // drawFrame.getCanva().active_tool = 1;
+                    drawFrame.getCanva().active_tool = 1;
                 }
             });
 
@@ -114,18 +118,19 @@ public class MainToolBar extends JToolBar {
             add(strokeLabel);
             add(chooseLineStroke);
             add(new Separator());
-            setLayout(new GridLayout(1, 4));
+            setLayout(new GridLayout(4, 1));
         }
     }
 
     class UndoRedoPanel extends JPanel {
         UndoRedoPanel() {
+            JPanel panel = new JPanel();
 
             JButton undoBtn = new JButton("undo");
             undoBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // drawFrame.getCanva().undo();
+                    drawFrame.getCanva().undo();
                 }
             });
 
@@ -133,24 +138,26 @@ public class MainToolBar extends JToolBar {
             redoBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // drawFrame.getCanva().redo();
+                    drawFrame.getCanva().redo();
                 }
             });
 
+            panel.add(undoBtn);
+            panel.add(redoBtn);
+
+            JPanel panelClear = new JPanel();
             JButton clearBtn = new JButton("clear");
             clearBtn.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // drawFrame.getCanva().clear();
+                    drawFrame.getCanva().clearCanva();
                 }
             });
+            panelClear.add(clearBtn);
             
-            add(undoBtn);
-            add(redoBtn);
-            add(new Separator());
-            add(clearBtn);
-
-            setLayout(new GridLayout(1,4));
+            add(panel);
+            add(panelClear);
+            setLayout(new GridLayout(2,1));
         }
 
     }
