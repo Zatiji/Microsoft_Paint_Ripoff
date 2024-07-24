@@ -257,7 +257,7 @@ public class DrawAlgorithm extends JPanel implements MouseListener, MouseMotionL
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
 
-    public void clear() {
+    public void clearCanva() {
         drawFrame.getCanva().shapes.removeAllElements();
         drawFrame.getCanva().removedShapes.removeAllElements();
         drawFrame.getCanva().previewShapes.removeAllElements();
